@@ -1,7 +1,10 @@
-<%-- Document : Foradmin Created on : Oct 11, 2023, 9:21:37 AM Author : ADMIN --%>
-
+<%-- 
+    Document   : ForAdminAccount
+    Created on : Oct 15, 2023, 10:16:44 PM
+    Author     : ADMIN
+--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 
@@ -29,8 +32,8 @@
                 </div>
                 <div class="rightHeader col-md-10" style="margin-top: 79px;">
                     <div class="seachHeader col-md-8">
-                        <!--Form Search-->
-                        <form style="width: 700px;" action="admin?action=searchBook" method="post" role="search">
+                       <!--Form Search-->
+                       <form style="width: 700px;" action="admin?action=searchBook" method="post" role="search">
                             <input style="    margin-left: 20px;
                                    width: 500px;
                                    height: 35px;" type="text" name="search" value="" placeholder="Tìm kiếm sản phẩm... "
@@ -48,8 +51,8 @@
                             </button>
                         </form>
                     </div>
-                    <!-- nut cua dang nhap-->
-                    <div class="itemHearder col-md-4" style="      padding-top: 7px;
+                    <!-- nut an dang nhap -->
+                    <div class="itemHearder col-md-4" style="       padding-top: 7px;
     margin-left: 0px;
     padding-left: 100px;">
                         <%
@@ -102,7 +105,7 @@
                         </div>
                         <%   }
                         %>
-                  
+                       
                     </div>
                 </div>
             </div>
@@ -146,59 +149,54 @@
         </div>
     </div>
     <!--form ADD-->
-    <form action="admin?action=Add" method="post" id="AddBook" style="display: none">
+    <form  action="adminaccount?action=Add" method="post" id="AddAccount" style="display: none ; margin-left: 500px">
         <h1> ADD BOOK</h1>
 
-        Book Name :<input style="margin-left: 10px;" type="text" name="BookName"><br>
-        image:<input style="margin-left: 50px;" type="text" name="image"><br>
-        author: <input style="margin-left: 45px;" type="text" name="author"><br>
-        price: <input style="margin-left: 55px;" type="text" name="price"><br>
-        date_of_public:<input type="text" name="date_of_public"><br>
-        describle:<input style="margin-left: 35px;" type="text" name="describle"><br>
-        categori: <select name="cate">
-            <option value="1">Kid Book</option>
-            <option value="2">Novel</option>
-            <option value="3">Short Story</option>
-            <option value="4">Poem</option>
-
+        username :<input style="margin-left: 10px;" type="text" name="username"><br>
+        password<input style="margin-left: 50px;" type="text" name="password"><br>
+        date <input style="margin-left: 45px;" type="text" name="date"><br>
+       
+        gender <select name="gender">
+            <option value="true">Male</option>
+            <option value="false">Female</option>
+          
+        </select><br>
+   role <select name="role">
+            <option value="2">admin</option>
+            <option value="3">user</option>
+           
         </select>
-
         <input type="submit" value="ADD">
     </form>
-    <!--list book-->
+    <!--list Account-->
     <h2 style="color: red">${mess}</h2>
-    <table border="1">
+    <table style="margin-left: 400px;
+    width: 700px;" border="1">
         <thead>
             <tr>
-                <th>ID</th>
-                <th >Book Name</th>
-                <th >image</th>
-                <th >author</th>
-                <th>price</th>
-                <th >Date OF Public</th>
-                <th >Describle</th>
-                <th>Categori</th>
-                <th>Action</th>
+                <th>username</th>
+                <th >password</th>
+                <th >date</th>
+                <th >gender</th>
+                <th>role</th>
+                
             </tr>
         </thead>
         <tbody>
-            <c:forEach items="${listBook}" var="book">
+            <c:forEach items="${listAccount}" var="acc">
 
                 <tr>
-                    <td>${book.id}</td>
-                    <td>${book.bookname}</td>
-                    <td>${book.image}</td>
-                    <td>${book.author}</td>
-                    <td>${book.price}</td>
-                    <td>${book.date_of_public}</td>
-                    <td>${book.describle}</td>
-                    <td>${book.cateid}</td>
+                    <td>${acc.username}</td>
+                    <td>${acc.password}</td>
+                    <td>${acc.date}</td>
+                    <td>${acc.gender =="true" ?"Male" :"Female"}</td>
+                    <td>${acc.role == '3' ?"user" :"Admin"}</td>
                     <td>
-                        <input onclick="AddBook()" type="submit" value="ADD BOOK" >
-                        <form action="admin?action=delete&id=${book.id}" method="post">
+                        <input onclick="AddAccount()" type="submit" value="ADD Account" >
+                        <form action="adminaccount?action=delete&id=${acc.username}" method="post">
                             <input type="submit" value="DELETE">
                         </form>
-                        <button onclick="Update(`${book.id}`, `${book.bookname}`, `${book.image}`, `${book.author}`, `${book.price}`, `${book.date_of_public}`, `${book.describle}`, `${book.cateid}`)">UPDATE</button>  
+                        <button onclick="Update(`${acc.username}`,`${acc.password}`,`${acc.date}`,`${acc.gender}`,`${acc.role}`)">UPDATE</button>  
                     </td>
                 </tr>
             </c:forEach>
@@ -208,54 +206,25 @@
 
     <!--Form Update-->
 
-    <form action="admin?action=update" method="post" id="UpdateBook" style="display: none">
+    <form action="admin?action=update" method="post" id="UpdateAcc" style="display: none">
         <h2>UPdate Book</h2>
-        <input style="display: none" type="text" name="ID"><br>
-        Book Name :<input style="margin-left: 10px;" type="text" name="BookName"><br>
-        image:<input style="margin-left: 50px;" type="text" name="image"><br>
-        author: <input style="margin-left: 45px;" type="text" name="author"><br>
-        price: <input style="margin-left: 55px;" type="text" name="price"><br>
-        date_of_public:<input type="text" name="date_of_public" placeholder="yyyy-MM-dd"><br>
-        describle:<input style="margin-left: 35px;" type="text" name="describle"><br>
-        categori: <select name="cate">
-            <option value="1">Kid Book</option>
-            <option value="2">Novel</option>
-            <option value="3">Short Story</option>
-            <option value="4">Poem</option>
-
+       username :<input style="margin-left: 10px;" type="text" name="username"><br>
+        password<input style="margin-left: 50px;" type="text" name="password"><br>
+        date <input style="margin-left: 45px;" type="text" name="date"><br>
+       
+        gender <select name="gender">
+            <option value="true">Male</option>
+            <option value="false">Female</option>
+          
+        </select><br>
+   role <select name="role">
+            <option value="2">admin</option>
+            <option value="3">user</option>
+           
         </select>
         <input type="submit" value="UPDATE">
     </form>
-    <!-- pagination -->
-    <nav aria-label="Page navigation " style="text-align: center">
-        <ul class="pagination">
-            <c:if test="${PageControl.page==1}">
-                <li class="Disabled">
-                    <a href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-            </c:if>
-            <c:if test="${PageControl.page>1}">
-                <li>
-                    <a href="admin?action=pagination&page=${PageControl.page-1}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <li><a href="admin?action=pagination&page=${PageControl.page}">${PageControl.page}</a></li>
-                    </a>
-                </li>
-            </c:if>
-            <c:if test="${PageControl.page+1<PageControl.totalPage }">
-                <li><a href="admin?action=pagination&page=${PageControl.page}">${PageControl.page}</a></li>
-                <li><a href="admin?action=pagination&page=${PageControl.page+1}">${PageControl.page+1}</a></li>
-                </c:if>
-
-            <c:if test="${PageControl.page+1==PageControl.totalPage}">
-                <li><a href="admin?action=pagination&page=${PageControl.page+1}">${PageControl.page+1}</a></li>
-
-            </c:if>   
-
-        </ul>
-    </nav>
+    
 </body>
 
 </html>
@@ -279,29 +248,27 @@
         }
     }
 
-    function AddBook() {
-        let x = document.getElementById('AddBook');
+    function AddAccount() {
+        let x = document.getElementById('AddAccount');
         if (x.style.display == 'none') {
             x.style.display = 'block';
         } else {
             x.style.display = 'none';
         }
     }
-    function Update(id, name, image, author, price, date, des, cateid) {
-        let y = document.getElementById('UpdateBook');
+    function Update(username ,password ,date,gender,role) {
+        let y = document.getElementById('UpdateAcc');
         if (y.style.display == 'none') {
             y.style.display = 'block';
         } else {
             y.style.display = 'none';
         }
-        document.querySelector("#UpdateBook input[name = ID]").value = id;
-        document.querySelector("#UpdateBook input[name = BookName]").value = name;
-        document.querySelector("#UpdateBook input[name = image]").value = image;
-        document.querySelector("#UpdateBook input[name = author]").value = author;
-        document.querySelector("#UpdateBook input[name = price]").value = price;
-        document.querySelector("#UpdateBook input[name = date_of_public]").value = date;
-        document.querySelector("#UpdateBook input[name = describle]").value = des;
-        document.querySelector("#UpdateBook input[name = cate]").value = cateid;
+        document.querySelector("#UpdateAcc input[name = username]").value = username;
+        document.querySelector("#UpdateAcc input[name = password]").value = password;
+        document.querySelector("#UpdateAcc input[name = date]").value = date;
+        document.querySelector("#UpdateAcc input[name = gender]").value = gender;
+        document.querySelector("#UpdateAcc input[name = role]").value = role;
+    
 
     }
 </script>

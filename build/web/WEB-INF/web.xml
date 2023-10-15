@@ -9,8 +9,12 @@
         <servlet-class>controller.LoginServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AdminCRUD</servlet-name>
-        <servlet-class>controller.AdminCRUD</servlet-class>
+        <servlet-name>AdminCRUDBook</servlet-name>
+        <servlet-class>controller.AdminCRUDBook</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminCRUDAccount</servlet-name>
+        <servlet-class>controller.AdminCRUDAccount</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -21,8 +25,12 @@
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AdminCRUD</servlet-name>
+        <servlet-name>AdminCRUDBook</servlet-name>
         <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminCRUDAccount</servlet-name>
+        <url-pattern>/adminaccount</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

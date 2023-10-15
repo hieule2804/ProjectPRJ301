@@ -30,12 +30,17 @@
                 <div class="rightHeader col-md-10" style="margin-top: 79px;">
                     <div class="seachHeader col-md-8">
                         <!--Form Search-->
-                        <form action="admin?action=searchBook" method="post" role="search">
+                        <form style="width: 700px;" action="admin?action=searchBook" method="post" role="search">
                             <input style="    margin-left: 20px;
                                    width: 500px;
-                                   height: 35px;" type="text" name="searchBook" value="" placeholder="Tìm kiếm sản phẩm... "
+                                   height: 35px;" type="text" name="search" value="" placeholder="Tìm kiếm sản phẩm... "
                                    class="input-group-field st-default-search-input search-text"
                                    autocomplete="off">
+                            <select name="type">
+                                <option value="searchbook">BOOK</option>
+                                <option value="searchaccount">Account</option>
+
+                            </select>
 
                             <button style="    width: 35px; border: 0px;
                                     height: 33px;" tyle="submit " class="glyphicon glyphicon-search">
@@ -43,8 +48,10 @@
                             </button>
                         </form>
                     </div>
-                    <div class="itemHearder col-md-4" style="    padding-top: 7px;
-                         margin-left: -33px;">
+                    <!-- nut cua dang nhap-->
+                    <div class="itemHearder col-md-4" style="      padding-top: 7px;
+    margin-left: 0px;
+    padding-left: 100px;">
                         <%
                  if( session.getAttribute("account") ==null)
                  {
@@ -95,164 +102,174 @@
                         </div>
                         <%   }
                         %>
-                        <div class="giohang col-md-6" style=" padding-left: 0px;">
-
-                            <a href="#" class="cart-label header-icon">
-                                <div class="cart-info" style="padding-left: 20px;">
-                                    <span class="glyphicon glyphicon-shopping-cart" id="cart-total"></span>
-                                </div>
-                            </a>
-                            <span class="block">Giỏ hàng</span>
-
-                        </div>
+                  
                     </div>
                 </div>
             </div>
-            <!-- list the loai sach -->
-            <div class="ThanhSelect">
-                <nav class="navbar navbar-default " style="margin-top: -20px;">
-                    <div class="container">
+            <!---->
 
-                        <ul class="nav nav-pills">
-                            <li style="margin-right: 15px;" role="presentation">
-                                <form action="admin?action=getAllBook" method="post">
+            <!-- list the loai sach -->
+
+            <nav class="navbar navbar-default " style="margin-top: -20px;">
+                <div class="btn-group">
+                    <button onclick="Menu()" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Book <span class="caret"></span>
+                    </button>
+
+                    <ul class="dropdown-menu" id="menu" style="display: none;">
+                        <li style="margin-right: 15px;">
+                            <form action="admin?action=getAllBook" method="post">
+                                <input style="border: 0px;
+                                       height: 50px;" type="submit" value="ALL BOOK">
+                            </form>
+                        </li>
+
+                        <!--sẽ dùng c:foreach trong jsp và sử dụng list thể lại sách để cho vào tên và link-->
+                        <c:forEach items="${listcate}" var="cate">
+                            <li style="margin-right: 15px;" >
+                                <form action="admin?action=searchByCate&id=${cate.id}" method="post">
                                     <input style="border: 0px;
-                                           height: 50px;" type="submit" value="ALL BOOK">
+                                           height: 50px;" type="submit" value="${cate.categori}">
                                 </form>
                             </li>
-
-                            <!--sẽ dùng c:foreach trong jsp và sử dụng list thể lại sách để cho vào tên và link-->
-                            <c:forEach items="${listcate}" var="cate">
-                                <li style="margin-right: 15px;" role="presentation">
-                                    <form action="admin?action=searchByCate&id=${cate.id}" method="post">
-                                        <input style="border: 0px;
-                                               height: 50px;" type="submit" value="${cate.categori}">
-                                    </form>
-                                </li>
-                            </c:forEach>
-
-                        </ul>
-
-                    </div>
-                </nav>
-            </div>
+                        </c:forEach>
+                    </ul>
+                </div>
+    <!-- list account -->
+     
+    <form style="margin-left: 300px;
+    margin-top: -30px;" action="adminaccount?action=getaccount" method="post">
+        <input type="submit" value="Account">
+    </form>
+  
+            </nav>
         </div>
+    </div>
+    <!--form ADD-->
+    <form action="admin?action=Add" method="post" id="AddBook" style="display: none">
+        <h1> ADD BOOK</h1>
 
-        <!--form ADD-->
-        <form action="admin?action=Add" method="post" id="AddBook" style="display: none">
-            <h1> ADD BOOK</h1>
+        Book Name :<input style="margin-left: 10px;" type="text" name="BookName"><br>
+        image:<input style="margin-left: 50px;" type="text" name="image"><br>
+        author: <input style="margin-left: 45px;" type="text" name="author"><br>
+        price: <input style="margin-left: 55px;" type="text" name="price"><br>
+        date_of_public:<input type="text" name="date_of_public"><br>
+        describle:<input style="margin-left: 35px;" type="text" name="describle"><br>
+        categori: <select name="cate">
+            <option value="1">Kid Book</option>
+            <option value="2">Novel</option>
+            <option value="3">Short Story</option>
+            <option value="4">Poem</option>
 
-            Book Name :<input style="margin-left: 10px;" type="text" name="BookName"><br>
-            image:<input style="margin-left: 50px;" type="text" name="image"><br>
-            author: <input style="margin-left: 45px;" type="text" name="author"><br>
-            price: <input style="margin-left: 55px;" type="text" name="price"><br>
-            date_of_public:<input type="text" name="date_of_public"><br>
-            describle:<input style="margin-left: 35px;" type="text" name="describle"><br>
-            categori: <select name="cate">
-                <option value="1">Kid Book</option>
-                <option value="2">Novel</option>
-                <option value="3">Short Story</option>
-                <option value="4">Poem</option>
+        </select>
 
-            </select>
+        <input type="submit" value="ADD">
+    </form>
+    <!--list book-->
+    <h2 style="color: red">${mess}</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th >Book Name</th>
+                <th >image</th>
+                <th >author</th>
+                <th>price</th>
+                <th >Date OF Public</th>
+                <th >Describle</th>
+                <th>Categori</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach items="${listBook}" var="book">
 
-            <input type="submit" value="ADD">
-        </form>
-        <!--list book-->
-        <h2 style="color: red">${mess}</h2>
-        <table border="1">
-            <thead>
                 <tr>
-                    <th>ID</th>
-                    <th >Book Name</th>
-                    <th >image</th>
-                    <th >author</th>
-                    <th>price</th>
-                    <th >Date OF Public</th>
-                    <th >Describle</th>
-                    <th>Categori</th>
-                    <th>Action</th>
+                    <td>${book.id}</td>
+                    <td>${book.bookname}</td>
+                    <td>${book.image}</td>
+                    <td>${book.author}</td>
+                    <td>${book.price}</td>
+                    <td>${book.date_of_public}</td>
+                    <td>${book.describle}</td>
+                    <td>${book.cateid}</td>
+                    <td>
+                        <input onclick="AddBook()" type="submit" value="ADD BOOK" >
+                        <form action="admin?action=delete&id=${book.id}" method="post">
+                            <input type="submit" value="DELETE">
+                        </form>
+                        <button onclick="Update(`${book.id}`, `${book.bookname}`, `${book.image}`, `${book.author}`, `${book.price}`, `${book.date_of_public}`, `${book.describle}`, `${book.cateid}`)">UPDATE</button>  
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                <c:forEach items="${listBook}" var="book">
+            </c:forEach>
 
-                    <tr>
-                        <td>${book.id}</td>
-                        <td>${book.bookname}</td>
-                        <td>${book.image}</td>
-                        <td>${book.author}</td>
-                        <td>${book.price}</td>
-                        <td>${book.date_of_public}</td>
-                        <td>${book.describle}</td>
-                        <td>${book.cateid}</td>
-                        <td>
-                            <input onclick="AddBook()" type="submit" value="ADD BOOK" >
-                            <form action="admin?action=delete&id=${book.id}" method="post">
-                                <input type="submit" value="DELETE">
-                            </form>
-                            <button onclick="Update(`${book.id}`, `${book.bookname}`, `${book.image}`, `${book.author}`, `${book.price}`, `${book.date_of_public}`, `${book.describle}`, `${book.cateid}`)">UPDATE</button>  
-                        </td>
-                    </tr>
-                </c:forEach>
+        </tbody>
+    </table>
 
-            </tbody>
-        </table>
+    <!--Form Update-->
 
-        <!--Form Update-->
+    <form action="admin?action=update" method="post" id="UpdateBook" style="display: none">
+        <h2>UPdate Book</h2>
+        <input style="display: none" type="text" name="ID"><br>
+        Book Name :<input style="margin-left: 10px;" type="text" name="BookName"><br>
+        image:<input style="margin-left: 50px;" type="text" name="image"><br>
+        author: <input style="margin-left: 45px;" type="text" name="author"><br>
+        price: <input style="margin-left: 55px;" type="text" name="price"><br>
+        date_of_public:<input type="text" name="date_of_public" placeholder="yyyy-MM-dd"><br>
+        describle:<input style="margin-left: 35px;" type="text" name="describle"><br>
+        categori: <select name="cate">
+            <option value="1">Kid Book</option>
+            <option value="2">Novel</option>
+            <option value="3">Short Story</option>
+            <option value="4">Poem</option>
 
-        <form action="admin?action=update" method="post" id="UpdateBook" style="display: none">
-            <h2>UPdate Book</h2>
-            <input style="display: none" type="text" name="ID"><br>
-            Book Name :<input style="margin-left: 10px;" type="text" name="BookName"><br>
-            image:<input style="margin-left: 50px;" type="text" name="image"><br>
-            author: <input style="margin-left: 45px;" type="text" name="author"><br>
-            price: <input style="margin-left: 55px;" type="text" name="price"><br>
-            date_of_public:<input type="text" name="date_of_public" placeholder="yyyy-MM-dd"><br>
-            describle:<input style="margin-left: 35px;" type="text" name="describle"><br>
-            categori: <select name="cate">
-                <option value="1">Kid Book</option>
-                <option value="2">Novel</option>
-                <option value="3">Short Story</option>
-                <option value="4">Poem</option>
-
-            </select>
-            <input type="submit" value="UPDATE">
-        </form>
-        <!-- pagination -->
-        <nav aria-label="Page navigation " style="text-align: center">
-            <ul class="pagination">
-                <c:if test="${PageControl.page==1}">
-                    <li class="Disabled">
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
+        </select>
+        <input type="submit" value="UPDATE">
+    </form>
+    <!-- pagination -->
+    <nav aria-label="Page navigation " style="text-align: center">
+        <ul class="pagination">
+            <c:if test="${PageControl.page==1}">
+                <li class="Disabled">
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            </c:if>
+            <c:if test="${PageControl.page>1}">
+                <li>
+                    <a href="admin?action=pagination&page=${PageControl.page-1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <li><a href="admin?action=pagination&page=${PageControl.page}">${PageControl.page}</a></li>
+                    </a>
+                </li>
+            </c:if>
+            <c:if test="${PageControl.page+1<PageControl.totalPage }">
+                <li><a href="admin?action=pagination&page=${PageControl.page}">${PageControl.page}</a></li>
+                <li><a href="admin?action=pagination&page=${PageControl.page+1}">${PageControl.page+1}</a></li>
                 </c:if>
-                <c:if test="${PageControl.page>1}">
-                    <li>
-                        <a href="admin?action=pagination&page=${PageControl.page-1}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <li><a href="admin?action=pagination&page=${PageControl.page}">${PageControl.page}</a></li>
-                        </a>
-                    </li>
-                </c:if>
-                <c:if test="${PageControl.page+1<PageControl.totalPage }">
-                    <li><a href="admin?action=pagination&page=${PageControl.page}">${PageControl.page}</a></li>
-                    <li><a href="admin?action=pagination&page=${PageControl.page+1}">${PageControl.page+1}</a></li>
-                    </c:if>
 
-                <c:if test="${PageControl.page+1==PageControl.totalPage}">
-                    <li><a href="admin?action=pagination&page=${PageControl.page+1}">${PageControl.page+1}</a></li>
+            <c:if test="${PageControl.page+1==PageControl.totalPage}">
+                <li><a href="admin?action=pagination&page=${PageControl.page+1}">${PageControl.page+1}</a></li>
 
-                </c:if>   
+            </c:if>   
 
-            </ul>
-        </nav>
-    </body>
+        </ul>
+    </nav>
+</body>
 
 </html>
 <script>
+    function Menu() {
+        let x = document.getElementById('menu');
+        if (x.style.display == 'none') {
+            x.style.display = 'block';
+        } else {
+            x.style.display = 'none';
+        }
+    }
+
+ 
     function LoginLogout() {
         let x = document.getElementById('LoginLogout');
         if (x.style.display == 'none') {

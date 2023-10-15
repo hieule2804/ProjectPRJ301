@@ -64,7 +64,7 @@ public class bookDao extends DBContext {
         try {
             //prepare command
             statement = connection.prepareStatement(sql);
-            statement.setString(1, "%" + namebook + "%");
+            statement.setString(1,  namebook + "%");
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");

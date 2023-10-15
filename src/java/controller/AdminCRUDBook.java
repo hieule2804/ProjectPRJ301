@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.AccountDAO;
 import dal.bookDao;
 import dal.categoriDAO;
 import jakarta.servlet.ServletException;
@@ -23,8 +24,8 @@ import model.PageControl;
  *
  * @author ADMIN
  */
-public class AdminCRUD extends HttpServlet {
-
+public class AdminCRUDBook extends HttpServlet {
+    AccountDAO accdao = new AccountDAO();
     bookDao bookdao = new bookDao();
     categoriDAO catedao = new categoriDAO();
 
@@ -47,7 +48,6 @@ public class AdminCRUD extends HttpServlet {
         }
         switch (action) {
             case "pagination":
-                
 
                 //get page 
                 String pageRaw = request.getParameter("page");
@@ -61,10 +61,10 @@ public class AdminCRUD extends HttpServlet {
                 // set vao page control
                 pageControl.setPage(page);
                 //tim kiem xem tongr bao nhieu page va book   
-                int totalBook ;
-               
-                    totalBook = bookdao.findTotalBook();
-                
+                int totalBook;
+
+                totalBook = bookdao.findTotalBook();
+
                 int totalPage = (totalBook % 9) == 0 ? (totalBook / 9) : (totalBook / 9) + 1;
                 pageControl.setTotalBook(totalBook);
                 pageControl.setTotalPage(totalPage);
@@ -151,13 +151,20 @@ public class AdminCRUD extends HttpServlet {
                 session.setAttribute("listcate", catedao.getListCate());
                 request.getRequestDispatcher("ForAdmin.jsp").forward(request, response);
                 break;
-                case"searchBook":
-                String nameSearch = request.getParameter("searchBook");
-                    listBook =bookdao.searchByName(nameSearch);
-                session.setAttribute("listBook", listBook);
-                session.setAttribute("listcate", catedao.getListCate());
-                request.getRequestDispatcher("ForAdmin.jsp").forward(request, response);
-                    break;
+            case "searchBook":
+                String nameSearch = request.getParameter("search");
+                String typeSearch = request.getParameter("type");
+                if (typeSearch.equalsIgnoreCase("searchbook")) {
+                    listBook = bookdao.searchByName(nameSearch);
+                    session.setAttribute("listBook", listBook);
+                    session.setAttribute("listcate", catedao.getListCate());
+                    request.getRequestDispatcher("ForAdmin.jsp").forward(request, response);
+                }else{
+                        session.setAttribute("listAccount", accdao.getListAccountByName(nameSearch));
+                        session.setAttribute("listcate", catedao.getListCate());
+                        response.sendRedirect("ForAdminAccount.jsp");
+                }
+                break;
             case "searchByCate":
                 int idS = Integer.parseInt(request.getParameter("id"));
                 listBook = bookdao.searchByCate(idS);

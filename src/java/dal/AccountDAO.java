@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
+import model.Book;
 
 /**
  *
@@ -76,18 +77,18 @@ public class AccountDAO extends DBContext {
     }
 
     public void addToDB(String usernameRe, String passwordRe, Date date1, boolean gender) {
-      connection = getConnection();
-      String sql="INSERT INTO [dbo].[Account]\n" +
-"           ([username]\n" +
-"           ,[password]\n" +
-"           ,[date]\n" +
-"           ,[gender]\n" +
-"           ,[role])\n" +
-"     VALUES\n" +
-"           (?,?,?,?,?)";
-      
+        connection = getConnection();
+        String sql = "INSERT INTO [dbo].[Account]\n"
+                + "           ([username]\n"
+                + "           ,[password]\n"
+                + "           ,[date]\n"
+                + "           ,[gender]\n"
+                + "           ,[role])\n"
+                + "     VALUES\n"
+                + "           (?,?,?,?,?)";
+
         try {
-            statement= connection.prepareStatement(sql);
+            statement = connection.prepareStatement(sql);
             statement.setString(1, usernameRe);
             statement.setString(2, passwordRe);
             statement.setDate(3, date1);
@@ -97,5 +98,74 @@ public class AccountDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void addToDB(String usernameRe, String passwordRe, Date date, boolean gender, int role) {
+        connection = getConnection();
+        String sql = "INSERT INTO [dbo].[Account]\n"
+                + "           ([username]\n"
+                + "           ,[password]\n"
+                + "           ,[date]\n"
+                + "           ,[gender]\n"
+                + "           ,[role])\n"
+                + "     VALUES\n"
+                + "           (?,?,?,?,?)";
+
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, usernameRe);
+            statement.setString(2, passwordRe);
+            statement.setDate(3, date);
+            statement.setBoolean(4, gender);
+            statement.setInt(5, role);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void deleAcc(String userDE) {
+        connection = getConnection();
+        String sql = "DELETE FROM [dbo].[Account]\n"
+                + "      WHERE username =  ?";
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, userDE);
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public List<Account> getListAccountByName(String nameSearch) {
+      List<Account> list = new ArrayList<>();
+        //connect db
+        connection = getConnection();
+        String sql = "SELECT *\n"
+                + "  FROM Account\n"
+                + "   where username like ?;";
+        try {
+            //prepare command
+            statement = connection.prepareStatement(sql);
+            statement.setString(1,  nameSearch + "%");
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String username = resultSet.getString("username");
+                String password = resultSet.getString("password");
+                Date date = resultSet.getDate("date");
+                boolean gender = resultSet.getBoolean("gender");
+                int role = resultSet.getInt("role");
+                Account a = new Account();
+                a.setDate(date);
+                a.setGender(gender);
+                a.setPassword(password);
+                a.setRole(role);
+                a.setUsername(username);
+                list.add(a);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(bookDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 }
