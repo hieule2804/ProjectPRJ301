@@ -1,0 +1,7 @@
+những trang html cần cho project:
++home : chưa có tài khoảng đăng nhập
++login,sign up:
++for user: chuyển đến trang home và có tài khoảng đã đăng nhập
++for admin:
++for employee:
+
